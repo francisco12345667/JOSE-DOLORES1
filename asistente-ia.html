@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>IA - General Estrada</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/ia.css"> </head>
+<body>
+    <main class="main-content" style="padding: 20px;">
+        <div class="ia-chat-container">
+            <header class="chat-header">
+                <div class="chat-profile">
+                    <div class="avatar-wrapper">
+                        <img src="img/retrato.jpg" alt="General Estrada" class="ia-avatar">
+                        <span class="status-dot"></span>
+                    </div>
+                    <div class="chat-info">
+                        <h2>General José Dolores Estrada</h2>
+                        <p>En línea • Inteligencia Histórica Oficial</p>
+                    </div>
+                </div>
+            </header>
+
+            <div id="ia-mensajes" class="chat-body">
+                <div class="message ia-message">
+                    <div class="message-content">
+                        <strong>General Estrada:</strong>
+                        <p>Saludos, patriota. Soy la memoria viva de San Jacinto. ¿Qué deseas aprender sobre la defensa de nuestra soberanía?</p>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="chat-footer">
+                <button id="mic-btn" class="icon-btn" title="Dictar por voz" onclick="IAReconocimiento.escuchar()">
+                    🎤
+                </button>
+                <input type="text" id="user-input" placeholder="Escribe tu consulta al General..." autocomplete="off">
+                <button id="send-btn" class="send-btn">
+                    <span>Enviar</span> ➔
+                </button>
+            </footer>
+        </div>
+    </main>
+
+    <script src="js/ia-core.js"></script>
+    <script src="js/ia-voz.js"></script>
+    <script src="js/ia-reconocimiento.js"></script>
+    <script src="js/ia-conversacion.js"></script>
+</body>
+</html>

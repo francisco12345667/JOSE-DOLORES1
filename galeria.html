@@ -1,0 +1,85 @@
+<main class="main-content">
+    <h2>Galería de la Epopeya</h2>
+    <div class="gallery-grid">
+        <img src="img/galeria/f0c70aa1d2980294cc6faccd3.png" alt="Reliquia">
+        <img src="img/batalla.jpg" alt="Obra pictórica">
+        <img src="img/bandera.jpg" alt="Símbolo Patrio">
+    </div>
+</main><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de la Epopeya | Estrada-Web</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+    <main class="main-content">
+        <header class="section-header anim-heroica">
+            <h2>Galería de la Epopeya Nacional</h2>
+            <p>Imágenes que inmortalizan la lucha por nuestra soberanía y dignidad.</p>
+        </header>
+
+        <section class="gallery-grid anim-heroica">
+            <figure class="gallery-item">
+                <img src="img/retrato.jpg" alt="Retrato del General José Dolores Estrada Vado">
+                <figcaption>
+                    <strong>El Héroe Nacional</strong>
+                    <p>General de División José Dolores Estrada Vado, símbolo de humildad y patriotismo inquebrantable.</p>
+                </figcaption>
+            </figure>
+
+            <figure class="gallery-item">
+                <img src="img/batalla.jpg" alt="Andrés Castro derribando a un filibustero en la Batalla de San Jacinto">
+                <figcaption>
+                    <strong>La Acción de Andrés Castro</strong>
+                    <p>Representación pictórica del heroísmo en la Hacienda San Jacinto, donde la piedra se hizo historia.</p>
+                </figcaption>
+            </figure>
+
+            <figure class="gallery-item">
+                <img src="img/bandera.jpg" alt="Bandera Nacional de la República de Nicaragua">
+                <figcaption>
+                    <strong>Símbolo de Soberanía</strong>
+                    <p>La azul y blanco, defendida con honor por el Ejército del Septentrión bajo el mando de Estrada.</p>
+                </figcaption>
+            </figure>
+        </section>
+    </main>
+
+    <style>
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .gallery-item {
+            background: var(--sepia-historia);
+            border: 1px solid var(--oro-honor);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--sombra-pro);
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-10px);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--oro-honor);
+        }
+        .gallery-item figcaption {
+            padding: 1.5rem;
+        }
+        .gallery-item figcaption strong {
+            display: block;
+            color: var(--azul-patria);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</body>
+</html>
