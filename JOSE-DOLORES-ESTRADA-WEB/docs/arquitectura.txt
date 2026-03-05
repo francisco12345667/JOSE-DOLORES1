@@ -1,7 +1,0 @@
-SISTEMA: JOSE-DOLORES-ESTRADA-WEB
-MODELO: Cliente-Servidor (REST API)
-MODULOS:
-1. Autenticación: Registro e ingreso de estudiantes.
-2. IA: Procesamiento de lenguaje natural sobre historia de Nicaragua.
-3. Juego: Sistema de puntos y rangos militares persistentes.
-4. Seguridad: Middleware de protección y limitación de tráfico.
