@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biografía | General José Dolores Estrada</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/animaciones.css">
+    <style>
+        .bio-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 40px; }
+        .timeline-card { background: white; padding: 30px; border-radius: 12px; box-shadow: var(--sombra-pro); border-top: 5px solid var(--azul-patria); }
+        .sidebar-card { background: var(--sepia-historia); padding: 20px; border-radius: 12px; border: 2px solid var(--oro-honor); text-align: center; }
+        .sidebar-card img { width: 100%; border-radius: 8px; margin-bottom: 15px; }
+        .timeline-item { border-left: 3px solid var(--oro-honor); padding-left: 20px; margin-bottom: 25px; position: relative; }
+        .timeline-item::before { content: ''; position: absolute; left: -9px; top: 0; width: 15px; height: 15px; background: var(--azul-patria); border-radius: 50%; }
+        .highlight-box { background: #f0f4f8; padding: 15px; border-radius: 8px; font-style: italic; margin: 20px 0; }
+        @media (max-width: 768px) { .bio-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ESTRADA-WEB</a>
+            <ul class="nav-links">
+                <li><a href="biografia.html" class="active">Biografía</a></li>
+                <li><a href="batalla-san-jacinto.html">San Jacinto</a></li>
+                <li><a href="juego.html">Desafío</a></li>
+                <li><a href="login.html" class="btn-login">Ingresar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content anim-heroica">
+        <div class="bio-grid">
+            <section class="timeline-card">
+                <h2>Vida y Tránsito a la Inmortalidad</h2>
+                <p><strong>José Dolores Estrada Vado</strong> nació el 16 de marzo de 1792 en Nandaime, en una casa ubicada en la calle El Calvario. Hijo de Timoteo Estrada y Gertrudis Vado Lugo, es recordado como uno de los principales héroes nacionales por su defensa de la soberanía contra la intervención liderada por William Walker.</p>
+                
+                <div class="highlight-box">
+                    "Su acción más recordada se produjo el 14 de septiembre de 1856, consolidando la resistencia contra la invasión extranjera y simbolizando la libertad del pueblo".
+                </div>
+
+                <div class="timeline-item">
+                    <h4>1792 - Orígenes</h4>
+                    <p>Nacimiento en Nandaime. Desde joven cultivó valores de modestia y honradez que marcarían su carrera militar.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>1856 - Victoria de San Jacinto</h4>
+                    <p>Al mando de un reducido contingente, repelió el ataque filibustero, asegurando la integridad territorial de Nicaragua.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>1971 - Reconocimiento Nacional</h4>
+                    <p>El Congreso lo declara oficialmente <strong>Héroe Nacional</strong> mediante el decreto legislativo No. 1889, estableciendo conmemoraciones patrióticas anuales.</p>
+                </div>
+            </section>
+
+            <aside class="sidebar-card">
+                <img src="img/retrato.jpg" alt="General Estrada">
+                <h3>Hoja de Datos</h3>
+                <p><strong>Rango:</strong> General de División</p>
+                <p><strong>Cuna:</strong> Calle El Calvario, Nandaime</p>
+                <p><strong>Padres:</strong> Timoteo Estrada y Gertrudis Vado</p>
+            </aside>
+        </div>
+    </main>
+</body>
+</html>

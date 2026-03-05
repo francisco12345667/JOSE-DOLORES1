@@ -1,0 +1,20 @@
+{
+  "app_metadata": {
+    "app_name": "JOSE-DOLORES-ESTRADA-WEB",
+    "version": "2.0.0",
+    "history_source": "Gaceta Sandinista / Ejército de Nicaragua",
+    "author": "Desarrollo y Tecnología Educativa"
+  },
+  "server_config": {
+    "api_endpoint": "http://localhost:3000/api",
+    "maintenance_mode": false,
+    "cors_origins": [
+      "http://127.0.0.1:5500", 
+      "http://localhost:5500"
+    ]
+  },
+  "gamification": {
+    "puntos_por_respuesta_correcta": 100,
+    "rango_maximo": "General de División"
+  }
+}

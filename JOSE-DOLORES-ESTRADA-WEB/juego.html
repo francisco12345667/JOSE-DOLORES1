@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío Táctico | General Estrada</title>
+    
+    <style>
+        /* =========================================================
+           1. SISTEMA DE DISEÑO GLOBAL
+           ========================================================= */
+        :root {
+            --azul-patria: #0033a0;
+            --azul-oscuro: #001d5a;
+            --oro-honor: #d4af37;
+            --sepia-historia: #f4ece1;
+            --blanco: #ffffff;
+            --exito: #28a745;
+            --error: #dc3545;
+            --texto-principal: #333;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f8f9fa; color: var(--texto-principal); }
+        h1, h2, h3 { font-family: 'Georgia', serif; color: var(--azul-oscuro); }
+
+        /* --- NAVEGACIÓN --- */
+        .navbar { background: var(--azul-patria); padding: 15px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000;}
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .logo { color: var(--oro-honor); font-size: 1.5rem; font-weight: 900; text-decoration: none; letter-spacing: 2px; }
+        .nav-links { list-style: none; display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: var(--blanco); text-decoration: none; font-weight: 500; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover { color: var(--oro-honor); }
+        
+        .btn-auth { border: 1px solid var(--blanco); padding: 5px 15px; border-radius: 20px; font-size: 0.95rem; }
+        .btn-auth.registro { background: var(--oro-honor); color: var(--azul-oscuro); border: none; font-weight: bold; }
+        .btn-perfil { background: #28a745; color: white !important; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+
+        /* --- CABECERA DEL JUEGO --- */
+        .game-header { background: linear-gradient(rgba(0, 29, 90, 0.9), rgba(0, 51, 160, 0.8)), url('img/batalla.jpg') center/cover; color: var(--blanco); padding: 60px 20px; text-align: center; }
+        .game-header h1 { color: var(--oro-honor); font-size: 2.5rem; margin-bottom: 10px; }
+        .game-header p { font-size: 1.2rem; max-width: 600px; margin: 0 auto; }
+
+        /* =========================================================
+           2. INTERFAZ DEL TABLERO TÁCTICO
+           ========================================================= */
+        .game-container { max-width: 800px; margin: -30px auto 50px; background: var(--blanco); border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; position: relative; z-index: 10; border-top: 5px solid var(--oro-honor); }
+        
+        /* Barra de Estado */
+        .status-bar { display: flex; justify-content: space-between; background: var(--azul-oscuro); color: var(--blanco); padding: 15px 25px; font-weight: bold; font-size: 1.1rem; }
+        .status-badge { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--oro-honor); }
+        .puntos-text { color: var(--oro-honor); font-size: 1.2rem; }
+
+        /* Preguntas y Progreso */
+        .question-area { padding: 40px; background: var(--sepia-historia); text-align: center; border-bottom: 2px solid #ddd; }
+        #pregunta-texto { font-size: 1.5rem; font-weight: bold; color: var(--azul-oscuro); margin-bottom: 20px; }
+        .progreso-container { width: 100%; background: #ccc; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 20px; }
+        #progreso-fill { height: 100%; background: var(--oro-honor); width: 0%; transition: width 0.5s ease; }
+
+        /* Opciones */
+        .options-area { padding: 30px 40px; background: var(--blanco); display: flex; flex-direction: column; gap: 15px; }
+        .btn-opcion { background: var(--blanco); border: 2px solid var(--azul-patria); padding: 15px 20px; border-radius: 10px; font-size: 1.1rem; color: var(--azul-patria); font-weight: bold; cursor: pointer; transition: all 0.2s; text-align: left; display: flex; align-items: center; }
+        .btn-opcion::before { content: '➔'; margin-right: 15px; opacity: 0; transition: 0.2s; transform: translateX(-10px); }
+        .btn-opcion:hover { background: rgba(0, 51, 160, 0.05); }
+        .btn-opcion:hover::before { opacity: 1; transform: translateX(0); }
+        
+        .btn-opcion.correct { background: var(--exito); color: white; border-color: var(--exito); }
+        .btn-opcion.correct::before { content: '✓'; opacity: 1; transform: translateX(0); }
+        .btn-opcion.wrong { background: var(--error); color: white; border-color: var(--error); }
+        .btn-opcion.wrong::before { content: '✖'; opacity: 1; transform: translateX(0); }
+
+        /* Resultados */
+        #pantalla-resultado { display: none; padding: 50px 30px; text-align: center; background: var(--blanco); }
+        .rango-final-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--oro-honor); margin-bottom: 20px; }
+        .btn-reiniciar { background: var(--azul-patria); color: var(--blanco); border: none; padding: 15px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn-reiniciar:hover { background: var(--azul-oscuro); transform: translateY(-3px); }
+
+        /* =========================================================
+           3. SISTEMA DE MODALES (LOGIN, REGISTRO, PERFIL)
+           ========================================================= */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 29, 90, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .auth-card { background: var(--sepia-historia); width: 100%; max-width: 400px; padding: 30px; border-radius: 10px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border-top: 5px solid var(--oro-honor); transform: translateY(30px); transition: 0.3s; text-align: center; }
+        .modal-overlay.active .auth-card { transform: translateY(0); }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #999; }
+        .auth-logo img { width: 80px; border-radius: 50%; border: 2px solid var(--oro-honor); margin-bottom: 10px; }
+        .input-group { text-align: left; margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.9rem; font-weight: bold; color: var(--azul-oscuro); margin-bottom: 5px; }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; outline: none; }
+        .input-group input:focus { border-color: var(--azul-patria); }
+        .btn-p { width: 100%; background: var(--azul-patria); color: white; padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-p:hover { background: var(--azul-oscuro); }
+        .profile-info { background: var(--blanco); padding: 15px; border-radius: 8px; margin-top: 20px; text-align: left; border: 1px solid #ddd; }
+        .profile-info p { font-size: 1.1rem; margin-bottom: 10px; font-weight: bold; color: var(--azul-oscuro); }
+        .profile-info span { color: var(--texto-principal); font-weight: normal; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ESTRADA-WEB</a>
+            <ul class="nav-links">
+                <li><a href="index.html#biografia">Biografía</a></li>
+                <li><a href="index.html#ia-section">IA Asistente</a></li>
+                <li><a href="index.html" style="color: var(--oro-honor); font-weight: bold;">← Volver al Portal</a></li>
+                
+                <div id="nav-publico" style="display: flex; gap: 10px; margin-left: 15px;">
+                    <li><a onclick="abrirModal('login')" class="btn-auth">Ingresar</a></li>
+                    <li><a onclick="abrirModal('registro')" class="btn-auth registro">Unirse</a></li>
+                </div>
+
+                <div id="nav-privado" style="display: none; gap: 10px; margin-left: 15px;">
+                    <li><a onclick="abrirModal('perfil')" class="btn-perfil">👤 Mi Perfil</a></li>
+                </div>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="game-header">
+        <h1>Desafío Táctico del Septentrión</h1>
+        <p>Demuestra tus conocimientos históricos, responde correctamente y asciende en la jerarquía militar del Ejército.</p>
+    </header>
+
+    <main>
+        <div class="game-container" id="game-board">
+            
+            <div class="status-bar">
+                <div class="status-badge">Rango: <span id="rango-display" style="color:var(--oro-honor);">Recluta</span></div>
+                <div>Puntos: <span id="puntos-display" class="puntos-text">0</span></div>
+            </div>
+
+            <div id="pantalla-juego">
+                <div class="question-area">
+                    <h2 id="pregunta-texto">Cargando desafío táctico...</h2>
+                    <div class="progreso-container">
+                        <div id="progreso-fill"></div>
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Pregunta <span id="num-pregunta">1</span> de <span id="tot-preguntas">22</span></p>
+                </div>
+                
+                <div class="options-area" id="opciones-container">
+                    </div>
+            </div>
+
+            <div id="pantalla-resultado">
+                <img src="img/retrato.jpg" class="rango-final-img" alt="Rango Final">
+                <h2 style="font-size: 2.2rem; margin-bottom: 10px;">¡Campaña Concluida!</h2>
+                <p style="font-size: 1.2rem; color: #666; margin-bottom: 20px;">Has demostrado tu honor en el campo de batalla.</p>
+                <div style="background: var(--sepia-historia); padding: 20px; border-radius: 10px; display: inline-block; text-align: left; border-left: 5px solid var(--oro-honor);">
+                    <p><strong>Puntuación Final:</strong> <span id="puntos-finales">0</span> pts</p>
+                    <p><strong>Rango Obtenido:</strong> <span id="rango-final">Recluta</span></p>
+                </div>
+                <br>
+                <button class="btn-reiniciar" onclick="iniciarJuego()">Volver a Jugar</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal-login" class="modal-overlay">
+        <div class="auth-card">
+            <span class="close-btn" onclick="cerrarModales()">&times;</span>
+            <div class="auth-logo"><img src="img/retrato.jpg" alt="Logo"></div>
+            <h2 style="color: var(--azul-oscuro);">Cuartel General</h2>
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Ingresa para guardar tu progreso del juego</p>
+            
+            <form onsubmit="iniciarSesion(event)">
+                <div class="input-group"><label>Correo Institucional</label><input type="email" required></div>
+                <div class="input-group"><label>Contraseña</label><input type="password" required></div>
+                <button type="submit" class="btn-p">Iniciar Sesión</button>
+            </form>
+            <p style="margin-top:15px; font-size: 0.9rem;">¿Eres nuevo? <a onclick="cambiarModal('registro')" style="color:var(--azul-patria); font-weight:bold; cursor:pointer;">Regístrate aquí</a></p>
+        </div>
+    </div>
+
+    <div id="modal-registro" class="modal-overlay">
+        <div class="auth-card" style="background: var(--azul-patria); color: white; border-top-color: var(--oro-honor);">
+            <span class="close-btn" onclick="cerrarModales()" style="color: white;">&times;</span>
+            <h2 style="color: white; margin-bottom: 10px;">Forma parte del Legado</h2>
+            <form onsubmit="registrarUsuario(event)">
+                <div class="input-group"><input type="text" placeholder="Nombre Completo" required></div>
+                <div class="input-group"><input type="email" placeholder="Correo Electrónico" required></div>
+                <div class="input-group"><input type="password" placeholder="Crea una contraseña" required></div>
+                <div style="text-align: left; font-size: 0.85rem; margin: 15px 0;">
+                    <label style="cursor: pointer; color: white;"><input type="checkbox" required style="margin-right: 5px;"> Acepto defender la verdad histórica.</label>
+                </div>
+                <button type="submit" class="btn-p" style="background: var(--azul-oscuro); color: white;">Crear Cuenta de Recluta</button>
+            </form>
+            <p style="margin-top:15px; font-size: 0.9rem;">¿Ya tienes cuenta? <a onclick="cambiarModal('login')" style="color:var(--oro-honor); font-weight:bold; cursor:pointer;">Ingresar</a></p>
+        </div>
+    </div>
+
+    <div id="modal-perfil" class="modal-overlay">
+        <div class="auth-card" style="background: white; border-top-color: #28a745;">
+            <span class="close-btn" onclick="cerrarModales()">&times;</span>
+            <h2 style="color: var(--azul-oscuro); margin-bottom: 15px;">Mi Perfil de Combate</h2>
+            <div class="profile-info">
+                <p>Estudiante: <span>Patriota Nicaragüense</span></p>
+                <p>Rango Actual: <span id="perfil-rango" style="font-weight:bold;">Soldado de la Patria</span></p>
+                <p>Mejor Puntaje: <span id="perfil-puntos" style="color: var(--oro-honor); font-weight: bold;">0 pts</span></p>
+            </div>
+            <button onclick="cerrarSesion()" class="btn-p" style="background: #dc3545;">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <script>
+        /* --- 1. LÓGICA DE MODALES (LOGIN/REGISTRO) --- */
+        function abrirModal(tipo) { cerrarModales(); const m = document.getElementById('modal-'+tipo); m.style.display='flex'; setTimeout(()=>m.classList.add('active'),10); }
+        function cerrarModales() { document.querySelectorAll('.modal-overlay').forEach(m => { m.classList.remove('active'); setTimeout(()=>m.style.display='none',300); }); }
+        function cambiarModal(tipo) { cerrarModales(); setTimeout(()=>abrirModal(tipo), 300); }
+        function iniciarSesion(e) { e.preventDefault(); cerrarModales(); document.getElementById('nav-publico').style.display='none'; document.getElementById('nav-privado').style.display='flex'; alert('¡Has ingresado al Cuartel General!'); }
+        function registrarUsuario(e) { e.preventDefault(); alert('¡Recluta registrado! Ahora inicia sesión.'); cambiarModal('login'); }
+        function cerrarSesion() { cerrarModales(); document.getElementById('nav-privado').style.display='none'; document.getElementById('nav-publico').style.display='flex'; }
+        window.onclick = function(e) { if (e.target.classList.contains('modal-overlay')) cerrarModales(); }
+
+        /* --- 2. BASE DE DATOS ÉPICA (22 PREGUNTAS) --- */
+        const bancoPreguntas = [
+            { pregunta: "¿En qué fecha exacta se libró la gloriosa Batalla de San Jacinto?", opciones: ["19 de julio de 1979", "14 de septiembre de 1856", "15 de septiembre de 1821", "16 de marzo de 1792"], respuestaCorrecta: 1 },
+            { pregunta: "¿Dónde nació el General José Dolores Estrada Vado?", opciones: ["Nandaime, Granada", "León", "Managua", "Rivas"], respuestaCorrecta: 0 },
+            { pregunta: "¿Qué héroe nacional derribó a un filibustero de una pedrada al quedarse sin municiones?", opciones: ["General José Dolores Estrada", "Emmanuel Mongalo", "Sargento Andrés Castro", "Benjamín Zeledón"], respuestaCorrecta: 2 },
+            { pregunta: "¿Quién era el comandante táctico de las tropas filibusteras durante la Batalla de San Jacinto?", opciones: ["William Walker", "Byron Cole", "Tomás Martínez", "Fernando Guzmán"], respuestaCorrecta: 1 },
+            { pregunta: "¿Cuántos patriotas nicaragüenses defendieron la hacienda aproximadamente?", opciones: ["Más de 1000", "Alrededor de 160", "Apenas 50", "300 patriotas"], respuestaCorrecta: 1 },
+            { pregunta: "¿A qué facción militar pertenecían los defensores de San Jacinto?", opciones: ["Ejército del Septentrión", "Ejército del Sur", "La Guardia Nacional", "Milicias de León"], respuestaCorrecta: 0 },
+            { pregunta: "¿Cuántos filibusteros atacaron la hacienda ese día?", opciones: ["160", "100", "Más de 300", "50"], respuestaCorrecta: 2 },
+            { pregunta: "¿Cuál era el nombre de los padres del General Estrada?", opciones: ["José y María", "Timoteo Estrada y Gertrudis Vado", "Pedro Estrada y Carmen Vado", "Fernando y Dolores"], respuestaCorrecta: 1 },
+            { pregunta: "¿Qué táctica con animales utilizaron los patriotas para causar pánico en el enemigo?", opciones: ["Liberaron toros de lidia", "Soltaron jaurías de perros", "Una estampida de caballos y yeguas", "Incendiaron nidos de avispas"], respuestaCorrecta: 2 },
+            { pregunta: "¿Quién era el líder máximo de la invasión filibustera en Nicaragua?", opciones: ["Byron Cole", "William Walker", "Cornelius Vanderbilt", "John B. Floyd"], respuestaCorrecta: 1 },
+            { pregunta: "¿En qué año fue declarado oficialmente Héroe Nacional el General Estrada?", opciones: ["1869", "1856", "1990", "1971"], respuestaCorrecta: 3 },
+            { pregunta: "¿A qué presidente se opuso Estrada políticamente, lo que le costó el exilio?", opciones: ["Fernando Guzmán", "José Santos Zelaya", "Tomás Martínez", "Patricio Rivas"], respuestaCorrecta: 2 },
+            { pregunta: "¿En qué países vivió su destierro político el General Estrada?", opciones: ["El Salvador y Guatemala", "Honduras y Costa Rica", "México y Estados Unidos", "Panamá y Colombia"], respuestaCorrecta: 1 },
+            { pregunta: "¿Qué grado militar máximo alcanzó y le fue restituido al volver del exilio?", opciones: ["Coronel", "Sargento Mayor", "General de División", "Comandante en Jefe"], respuestaCorrecta: 2 },
+            { pregunta: "¿En qué año y ciudad pasó a la inmortalidad el General Estrada?", opciones: ["1869 en Managua", "1856 en San Jacinto", "1890 en Nandaime", "1863 en Costa Rica"], respuestaCorrecta: 0 },
+            { pregunta: "¿Qué presidente decretó la amnistía que le permitió regresar a Nicaragua en 1869?", opciones: ["Tomás Martínez", "Frutos Chamorro", "Fernando Guzmán", "William Walker"], respuestaCorrecta: 2 },
+            { pregunta: "¿En qué lugar específico de la hacienda se atrincheraron estratégicamente los patriotas?", opciones: ["En el techo de la casa", "En los corrales de piedra", "En el bosque cercano", "En el pozo de agua"], respuestaCorrecta: 1 },
+            { pregunta: "¿Dónde descansan actualmente los restos mortales del General Estrada?", opciones: ["En el Cementerio de Managua", "En la Hacienda San Jacinto", "En la Iglesia Parroquial de Nandaime", "En el Palacio Nacional"], respuestaCorrecta: 2 },
+            { pregunta: "¿Qué arma o recurso se les agotó a los nicaragüenses durante el momento más crítico del combate?", opciones: ["Agua", "Bayonetas", "Municiones y pólvora", "Piedras"], respuestaCorrecta: 2 },
+            { pregunta: "¿Cuál es el departamento de Nicaragua al que pertenece su cuna, Nandaime?", opciones: ["Masaya", "Carazo", "Granada", "Rivas"], respuestaCorrecta: 2 },
+            { pregunta: "¿A qué nacionalidad pertenecían la gran mayoría de los filibusteros invasores?", opciones: ["Españoles", "Estadounidenses", "Ingleses", "Franceses"], respuestaCorrecta: 1 },
+            { pregunta: "Según la historia y el Ejército de Nicaragua, ¿cuál es el mayor legado del General Estrada?", opciones: ["El libre comercio", "La invención de tácticas modernas", "La defensa de la soberanía y la autodeterminación", "La fundación de Nandaime"], respuestaCorrecta: 2 }
+        ];
+
+        /* --- 3. LÓGICA DEL JUEGO --- */
+        let preguntaActualIndex = 0;
+        let puntos = 0;
+        let bloqueado = false;
+
+        const DOM = {
+            pregunta: document.getElementById('pregunta-texto'),
+            opciones: document.getElementById('opciones-container'),
+            progreso: document.getElementById('progreso-fill'),
+            puntos: document.getElementById('puntos-display'),
+            rango: document.getElementById('rango-display'),
+            numAct: document.getElementById('num-pregunta'),
+            totPreg: document.getElementById('tot-preguntas'),
+            pantJuego: document.getElementById('pantalla-juego'),
+            pantRes: document.getElementById('pantalla-resultado')
+        };
+
+        function iniciarJuego() {
+            preguntaActualIndex = 0; puntos = 0; actualizarMarcador();
+            DOM.pantRes.style.display = 'none'; DOM.pantJuego.style.display = 'block';
+            DOM.totPreg.innerText = bancoPreguntas.length;
+            cargarPregunta();
+        }
+
+        function cargarPregunta() {
+            bloqueado = false;
+            const q = bancoPreguntas[preguntaActualIndex];
+            DOM.pregunta.innerText = q.pregunta;
+            DOM.numAct.innerText = preguntaActualIndex + 1;
+            DOM.progreso.style.width = `${((preguntaActualIndex) / bancoPreguntas.length) * 100}%`;
+            DOM.opciones.innerHTML = '';
+
+            q.opciones.forEach((opcion, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-opcion'; btn.innerText = opcion;
+                btn.onclick = () => procesarRespuesta(btn, index, q.respuestaCorrecta);
+                DOM.opciones.appendChild(btn);
+            });
+        }
+
+        function procesarRespuesta(btnSeleccionado, indexSel, indexCor) {
+            if (bloqueado) return;
+            bloqueado = true;
+            const botones = DOM.opciones.querySelectorAll('.btn-opcion');
+
+            if (indexSel === indexCor) {
+                btnSeleccionado.classList.add('correct');
+                puntos += 100;
+                actualizarMarcador();
+            } else {
+                btnSeleccionado.classList.add('wrong');
+                botones[indexCor].classList.add('correct'); // Muestra la correcta
+            }
+
+            botones.forEach(b => b.style.cursor = 'not-allowed');
+
+            setTimeout(() => {
+                preguntaActualIndex++;
+                if (preguntaActualIndex < bancoPreguntas.length) cargarPregunta();
+                else finalizarJuego();
+            }, 1500);
+        }
+
+        function actualizarMarcador() {
+            DOM.puntos.innerText = puntos;
+            let rango = "Recluta";
+            if (puntos >= 500) rango = "Cabo";
+            if (puntos >= 1000) rango = "Sargento";
+            if (puntos >= 1500) rango = "Teniente";
+            if (puntos >= 1900) rango = "Capitán";
+            if (puntos === 2200) rango = "General de División";
+            
+            DOM.rango.innerText = rango;
+            // Sincronizar con el Perfil del modal
+            document.getElementById('perfil-rango').innerText = rango;
+            document.getElementById('perfil-puntos').innerText = puntos + " pts";
+        }
+
+        function finalizarJuego() {
+            DOM.progreso.style.width = '100%';
+            DOM.pantJuego.style.display = 'none';
+            DOM.pantRes.style.display = 'block';
+            document.getElementById('puntos-finales').innerText = puntos;
+            document.getElementById('rango-final').innerText = DOM.rango.innerText;
+        }
+
+        // Iniciar al cargar la página
+        document.addEventListener('DOMContentLoaded', iniciarJuego);
+
+    </script>
+</body>
+</html>

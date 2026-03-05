@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portal Histórico y Educativo del General José Dolores Estrada Vado. Héroe Nacional de Nicaragua.">
+    <meta name="author" content="Xoltxiree / Rousbel">
+    <meta name="keywords" content="José Dolores Estrada, Batalla de San Jacinto, Nicaragua, Héroe Nacional, Historia">
+    <title>General José Dolores Estrada | Portal Oficial Interactivo</title>
+    
+    <style>
+        /* =========================================================
+           1. RESET Y VARIABLES GLOBALES
+           ========================================================= */
+        :root {
+            /* Paleta Oficial del Proyecto */
+            --azul-patria: #0033a0;
+            --azul-oscuro: #001d5a;
+            --azul-claro: #4d79ff;
+            --oro-honor: #d4af37;
+            --oro-oscuro: #b5952f;
+            --sepia-historia: #f4ece1;
+            --sepia-oscuro: #e6dac3;
+            --blanco: #ffffff;
+            --negro: #000000;
+            --texto-principal: #333333;
+            --texto-secundario: #666666;
+            
+            /* Colores de Estado / UI */
+            --exito: #28a745;
+            --error: #dc3545;
+            --advertencia: #ffc107;
+            
+            /* Sombras, Bordes y Transiciones */
+            --sombra-suave: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --sombra-elegante: 0 10px 30px rgba(0, 51, 160, 0.15);
+            --sombra-fuerte: 0 15px 35px rgba(0, 0, 0, 0.2);
+            --sombra-texto: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            --borde-radio-suave: 8px;
+            --borde-radio-fuerte: 20px;
+            --borde-radio-circular: 50%;
+            --transicion-rapida: all 0.3s ease;
+            --transicion-lenta: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html { 
+            scroll-behavior: smooth; 
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fafafa;
+            color: var(--texto-principal);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* =========================================================
+           2. TIPOGRAFÍA Y CLASES DE UTILIDAD
+           ========================================================= */
+        h1, h2, h3, h4, h5, h6 { 
+            font-family: 'Georgia', serif; 
+            color: var(--azul-oscuro); 
+            line-height: 1.2;
+        }
+
+        .text-center { 
+            text-align: center; 
+        }
+        
+        .text-gold { 
+            color: var(--oro-honor); 
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+        
+        .section-padding { 
+            padding: 80px 0; 
+        }
+
+        /* Botones Base */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transicion-rapida);
+            outline: none;
+        }
+
+        .btn-primary { 
+            background: var(--oro-honor); 
+            color: var(--azul-oscuro); 
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); 
+        }
+
+        .btn-primary:hover, .btn-primary:focus { 
+            background: var(--oro-oscuro); 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6); 
+        }
+
+        .btn-outline { 
+            background: transparent; 
+            color: var(--blanco); 
+            border: 2px solid var(--blanco); 
+        }
+
+        .btn-outline:hover, .btn-outline:focus { 
+            background: var(--blanco); 
+            color: var(--azul-patria); 
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: var(--blanco);
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        /* =========================================================
+           3. BARRA DE NAVEGACIÓN (NAVBAR)
+           ========================================================= */
+        .navbar {
+            background: var(--azul-patria);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--sombra-fuerte);
+            transition: var(--transicion-rapida);
+        }
+
+        .nav-container { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        .logo { 
+            color: var(--oro-honor); 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            text-decoration: none; 
+            letter-spacing: 2px; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .nav-links { 
+            list-style: none; 
+            display: flex; 
+            gap: 25px; 
+            align-items: center; 
+        }
+
+        .nav-links a { 
+            color: var(--blanco); 
+            text-decoration: none; 
+            font-weight: 500; 
+            font-size: 1rem; 
+            transition: var(--transicion-rapida); 
+            position: relative; 
+            cursor: pointer;
+        }
+
+        .nav-links .nav-item-hover::after {
+            content: ''; 
+            position: absolute; 
+            width: 0; 
+            height: 2px; 
+            bottom: -5px; 
+            left: 0; 
+            background-color: var(--oro-honor); 
+            transition: var(--transicion-rapida);
+        }
+
+        .nav-links .nav-item-hover:hover::after { 
+            width: 100%; 
+        }
+
+        .nav-links a:hover { 
+            color: var(--oro-honor); 
+        }
+
+        /* Botones de Autenticación en Navbar */
+        .btn-auth { 
+            border: 1px solid var(--blanco); 
+            padding: 8px 18px; 
+            border-radius: 20px; 
+            font-size: 0.95rem;
+            transition: var(--transicion-rapida);
+        }
+
+        .btn-auth:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-auth.registro { 
+            background: var(--oro-honor); 
+            color: var(--azul-oscuro); 
+            border: none; 
+            font-weight: bold; 
+        }
+
+        .btn-auth.registro:hover {
+            background: var(--blanco);
+            transform: scale(1.05);
+        }
+
+        .btn-perfil { 
+            background: var(--exito); 
+            color: var(--blanco) !important; 
+            padding: 8px 18px; 
+            border-radius: 20px; 
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-perfil:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* =========================================================
+           4. SECCIÓN HERO (PORTADA PRINCIPAL)
+           ========================================================= */
+        .hero-header {
+            position: relative;
+            height: 90vh;
+            min-height: 600px;
+            background: linear-gradient(to right, rgba(0, 29, 90, 0.9), rgba(0, 51, 160, 0.6)), url('img/batalla.jpg') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--blanco);
+        }
+
+        .hero-content { 
+            max-width: 900px; 
+            padding: 20px; 
+            z-index: 2; 
+        }
+
+        .hero-portrait {
+            width: 200px; 
+            height: 200px; 
+            margin: 0 auto 25px; 
+            border-radius: var(--borde-radio-circular);
+            border: 6px solid var(--oro-honor); 
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+            animation: pulseGlow 3s infinite alternate;
+            background-color: var(--blanco);
+        }
+
+        .hero-portrait img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
+        .hero-content h1 { 
+            font-size: 4rem; 
+            margin: 20px 0; 
+            text-shadow: var(--sombra-texto); 
+            color: var(--blanco); 
+            letter-spacing: 1px;
+        }
+
+        .hero-content p { 
+            font-size: 1.4rem; 
+            margin-bottom: 40px; 
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8); 
+            font-weight: 300;
+        }
+
+        .hero-actions { 
+            display: flex; 
+            gap: 20px; 
+            justify-content: center; 
+            flex-wrap: wrap;
+        }
+
+        /* =========================================================
+           5. SECCIÓN BIOGRÁFICA
+           ========================================================= */
+        .bio-section { 
+            background-color: var(--blanco); 
+            position: relative;
+        }
+
+        .bio-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 60px; 
+            align-items: center; 
+        }
+
+        .bio-text h2 { 
+            font-size: 2.8rem; 
+            margin-bottom: 25px; 
+            position: relative; 
+            padding-bottom: 15px; 
+        }
+
+        .bio-text h2::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 80px; 
+            height: 4px; 
+            background: var(--oro-honor); 
+            border-radius: 2px;
+        }
+
+        .bio-text p { 
+            font-size: 1.15rem; 
+            color: var(--texto-secundario); 
+            margin-bottom: 20px; 
+            text-align: justify; 
+            line-height: 1.8;
+        }
+
+        .bio-image { 
+            border-radius: var(--borde-radio-fuerte); 
+            overflow: hidden; 
+            box-shadow: var(--sombra-elegante); 
+            position: relative;
+        }
+
+        .bio-image::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+
+        .bio-image img { 
+            width: 100%; 
+            display: block; 
+            transition: var(--transicion-lenta); 
+        }
+
+        .bio-image:hover img { 
+            transform: scale(1.05); 
+        }
+
+        /* =========================================================
+           6. MÓDULO DE INTELIGENCIA ARTIFICIAL (CHAT)
+           ========================================================= */
+        .ia-wrapper { 
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+            padding: 100px 0; 
+            border-top: 1px solid #dee2e6;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .ia-wrapper .text-center h2 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .ia-container {
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: var(--blanco); 
+            border-radius: var(--borde-radio-fuerte);
+            box-shadow: var(--sombra-fuerte); 
+            overflow: hidden; 
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ia-header {
+            background: linear-gradient(90deg, var(--azul-oscuro) 0%, var(--azul-patria) 100%);
+            color: var(--blanco); 
+            padding: 25px 30px; 
+            display: flex; 
+            align-items: center; 
+            gap: 20px;
+            border-bottom: 4px solid var(--oro-honor);
+        }
+
+        .ia-header img { 
+            width: 65px; 
+            height: 65px; 
+            border-radius: var(--borde-radio-circular); 
+            border: 3px solid var(--oro-honor); 
+            background: var(--blanco); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .ia-info h3 { 
+            margin: 0; 
+            color: var(--blanco); 
+            font-size: 1.5rem; 
+            letter-spacing: 0.5px;
+        }
+
+        .ia-info p { 
+            margin: 5px 0 0; 
+            font-size: 0.95rem; 
+            color: #cbd5e1; 
+            display: flex;
+            align-items: center;
+        }
+
+        .status-dot { 
+            display: inline-block; 
+            width: 12px; 
+            height: 12px; 
+            background: var(--exito); 
+            border-radius: var(--borde-radio-circular); 
+            margin-right: 8px; 
+            box-shadow: 0 0 10px var(--exito); 
+            animation: blink 2s infinite;
+        }
+        
+        .chat-window {
+            height: 500px; 
+            background: var(--sepia-historia); 
+            padding: 30px;
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px;
+            /* Patrón de fondo sutil */
+            background-image: url('data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23d4af37" fill-opacity="0.05"%3E%3Ccircle cx="3" cy="3" r="3"/%3E%3C/g%3E%3C/svg%3E');
+        }
+
+        /* Scrollbar del chat personalizado */
+        .chat-window::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-window::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        .chat-window::-webkit-scrollbar-thumb {
+            background: rgba(0, 51, 160, 0.3);
+            border-radius: 10px;
+        }
+        .chat-window::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 51, 160, 0.6);
+        }
+        
+        .msg-bubble { 
+            max-width: 80%; 
+            padding: 15px 22px; 
+            border-radius: 18px; 
+            line-height: 1.5; 
+            font-size: 1.05rem; 
+            position: relative; 
+            animation: slideInUp 0.3s ease-out forwards; 
+        }
+
+        .msg-ia { 
+            background: var(--blanco); 
+            color: var(--texto-principal); 
+            align-self: flex-start; 
+            border-bottom-left-radius: 0; 
+            box-shadow: var(--sombra-suave); 
+            border-left: 5px solid var(--azul-patria); 
+        }
+
+        .msg-ia strong { 
+            color: var(--azul-patria); 
+            display: block; 
+            margin-bottom: 8px; 
+            font-size: 0.95rem; 
+            letter-spacing: 0.5px; 
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .msg-user { 
+            background: var(--azul-patria); 
+            color: var(--blanco); 
+            align-self: flex-end; 
+            border-bottom-right-radius: 0; 
+            box-shadow: 0 4px 10px rgba(0,51,160,0.3); 
+        }
+        
+        .chat-input-box { 
+            display: flex; 
+            padding: 25px; 
+            background: var(--blanco); 
+            border-top: 1px solid #e2e8f0; 
+            gap: 15px; 
+            align-items: center; 
+        }
+
+        .chat-input-box input {
+            flex: 1; 
+            padding: 16px 25px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 30px;
+            font-size: 1.05rem; 
+            outline: none; 
+            transition: var(--transicion-rapida); 
+            background: #f8fafc;
+            color: var(--texto-principal);
+        }
+
+        .chat-input-box input:focus { 
+            border-color: var(--azul-patria); 
+            background: var(--blanco); 
+            box-shadow: 0 0 0 4px rgba(0,51,160,0.1); 
+        }
+
+        .chat-input-box button {
+            background: var(--oro-honor); 
+            color: var(--azul-oscuro); 
+            border: none; 
+            padding: 0 40px;
+            height: 56px; 
+            border-radius: 30px; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            cursor: pointer;
+            transition: var(--transicion-rapida); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .chat-input-box button:hover { 
+            background: var(--oro-oscuro); 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.5); 
+        }
+
+        .chat-input-box button:active {
+            transform: translateY(1px);
+        }
+
+        .typing-indicator { 
+            font-style: italic; 
+            color: #64748b; 
+            font-size: 0.95rem; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* =========================================================
+           7. LÍNEA DE TIEMPO HISTÓRICA
+           ========================================================= */
+        .timeline-section { 
+            background: var(--azul-oscuro); 
+            color: var(--blanco); 
+            position: relative;
+        }
+
+        .timeline-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('img/batalla.jpg') center/cover;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .timeline-section .section-title { 
+            color: var(--oro-honor); 
+            text-align: center; 
+            font-size: 3rem; 
+            margin-bottom: 70px; 
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 40px; 
+            position: relative; 
+            z-index: 2;
+        }
+
+        .timeline-item { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 40px 30px; 
+            border-radius: 15px; 
+            text-align: center; 
+            transition: var(--transicion-rapida); 
+            position: relative; 
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .timeline-item::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 5px; 
+            background: var(--oro-honor); 
+            transform: scaleX(0); 
+            transition: var(--transicion-rapida); 
+            transform-origin: left; 
+        }
+
+        .timeline-item:hover { 
+            transform: translateY(-10px); 
+            background: rgba(255,255,255,0.1); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .timeline-item:hover::before { 
+            transform: scaleX(1); 
+        }
+
+        .year-badge { 
+            display: inline-block; 
+            background: var(--oro-honor); 
+            color: var(--azul-oscuro); 
+            font-size: 2.2rem; 
+            font-weight: 900; 
+            padding: 10px 25px; 
+            border-radius: 30px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .timeline-item h3 { 
+            color: var(--blanco); 
+            font-size: 1.6rem; 
+            margin-bottom: 15px; 
+        }
+
+        .timeline-item p { 
+            color: #cbd5e1; 
+            font-size: 1.05rem; 
+            line-height: 1.6;
+        }
+
+        /* =========================================================
+           8. FOOTER / PIE DE PÁGINA
+           ========================================================= */
+        .site-footer { 
+            background: #0f172a; 
+            color: #94a3b8; 
+            padding: 70px 0 20px; 
+            border-top: 5px solid var(--azul-patria); 
+        }
+
+        .footer-grid { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr 1fr; 
+            gap: 50px; 
+            margin-bottom: 50px; 
+        }
+
+        .footer-brand h2 { 
+            color: var(--oro-honor); 
+            margin-bottom: 20px; 
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-brand p { 
+            margin-bottom: 20px; 
+            max-width: 450px; 
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .footer-links h4 { 
+            color: var(--blanco); 
+            font-size: 1.3rem; 
+            margin-bottom: 25px; 
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 40px; height: 3px;
+            background: var(--oro-honor);
+        }
+
+        .footer-links ul { 
+            list-style: none; 
+        }
+
+        .footer-links ul li { 
+            margin-bottom: 15px; 
+        }
+
+        .footer-links ul a { 
+            color: #94a3b8; 
+            text-decoration: none; 
+            transition: var(--transicion-rapida); 
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links ul a::before {
+            content: '›';
+            margin-right: 10px;
+            color: var(--oro-honor);
+            font-size: 1.5rem;
+            line-height: 0;
+        }
+
+        .footer-links ul a:hover { 
+            color: var(--blanco); 
+            transform: translateX(5px);
+        }
+
+        .footer-bottom { 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            padding-top: 25px; 
+            text-align: center; 
+            font-size: 0.95rem; 
+            color: #64748b;
+        }
+
+        /* =========================================================
+           9. SISTEMA DE MODALES (LOGIN, REGISTRO, PERFIL)
+           ========================================================= */
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 29, 90, 0.85); 
+            backdrop-filter: blur(8px); 
+            z-index: 2000; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
+        }
+
+        .modal-overlay.active { 
+            display: flex; 
+            opacity: 1; 
+        }
+        
+        .auth-card { 
+            background: var(--blanco); 
+            width: 100%; 
+            max-width: 420px; 
+            padding: 40px; 
+            border-radius: 15px; 
+            position: relative; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
+            border-top: 6px solid var(--oro-honor); 
+            transform: translateY(40px); 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            text-align: center; 
+        }
+
+        .auth-card.registro-theme {
+            background: var(--azul-patria);
+            color: var(--blanco);
+            border-top-color: var(--oro-honor);
+        }
+
+        .auth-card.perfil-theme {
+            border-top-color: var(--exito);
+        }
+
+        .modal-overlay.active .auth-card { 
+            transform: translateY(0); 
+        }
+
+        .close-btn { 
+            position: absolute; 
+            top: 15px; 
+            right: 20px; 
+            font-size: 1.8rem; 
+            cursor: pointer; 
+            color: #999; 
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .registro-theme .close-btn { color: rgba(255,255,255,0.6); }
+        .registro-theme .close-btn:hover { color: var(--blanco); }
+        .close-btn:hover { color: var(--error); }
+        
+        .auth-logo { margin-bottom: 20px; }
+        .auth-logo img { 
+            width: 90px; 
+            height: 90px;
+            border-radius: var(--borde-radio-circular); 
+            border: 3px solid var(--oro-honor); 
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .auth-card h2 { font-size: 1.8rem; margin-bottom: 5px; color: var(--azul-oscuro); }
+        .registro-theme h2 { color: var(--blanco); }
+        .auth-card p.subtitle { color: var(--texto-secundario); font-size: 0.95rem; margin-bottom: 25px; }
+        .registro-theme p.subtitle { color: rgba(255,255,255,0.8); }
+
+        .input-group { 
+            text-align: left; 
+            margin-bottom: 18px; 
+        }
+
+        .input-group label { 
+            display: block; 
+            font-size: 0.95rem; 
+            font-weight: 600; 
+            color: var(--azul-oscuro); 
+            margin-bottom: 8px; 
+        }
+
+        .registro-theme .input-group label { color: var(--blanco); }
+
+        .input-group input { 
+            width: 100%; 
+            padding: 14px; 
+            border: 1px solid #ced4da; 
+            border-radius: var(--borde-radio-suave); 
+            outline: none; 
+            font-size: 1rem;
+            transition: var(--transicion-rapida);
+            background: #f8f9fa;
+        }
+
+        .input-group input:focus { 
+            border-color: var(--azul-patria); 
+            background: var(--blanco);
+            box-shadow: 0 0 0 3px rgba(0,51,160,0.1);
+        }
+
+        .registro-theme .input-group input {
+            background: rgba(255,255,255,0.9);
+            border: none;
+        }
+
+        .registro-theme .input-group input:focus {
+            background: var(--blanco);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.5);
+        }
+
+        .checkbox-group {
+            text-align: left; 
+            font-size: 0.9rem; 
+            margin: 15px 0 25px; 
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        
+        .btn-modal { 
+            width: 100%; 
+            background: var(--azul-patria); 
+            color: var(--blanco); 
+            padding: 14px 20px; 
+            border: none; 
+            border-radius: var(--borde-radio-suave); 
+            font-weight: bold; 
+            font-size: 1.05rem;
+            cursor: pointer; 
+            transition: var(--transicion-rapida); 
+            margin-top: 10px; 
+        }
+
+        .btn-modal:hover { 
+            background: var(--azul-oscuro); 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .registro-theme .btn-modal {
+            background: var(--azul-oscuro);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .registro-theme .btn-modal:hover {
+            background: #00123a;
+            border-color: var(--oro-honor);
+        }
+        
+        .switch-form {
+            margin-top: 25px;
+            font-size: 0.95rem;
+        }
+
+        .switch-form a {
+            color: var(--azul-patria);
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transicion-rapida);
+        }
+
+        .switch-form a:hover {
+            color: var(--oro-honor);
+            text-decoration: underline;
+        }
+
+        .registro-theme .switch-form a {
+            color: var(--oro-honor);
+        }
+
+        .registro-theme .switch-form a:hover {
+            color: var(--blanco);
+        }
+
+        /* Estilos Perfil */
+        .perfil-data { 
+            background: var(--sepia-historia); 
+            padding: 20px; 
+            border-radius: var(--borde-radio-suave); 
+            margin-top: 20px; 
+            text-align: left; 
+            border-left: 5px solid var(--oro-honor); 
+        }
+
+        .perfil-data p { 
+            font-size: 1.1rem; 
+            margin-bottom: 12px; 
+            font-weight: bold; 
+            color: var(--azul-oscuro); 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+            padding-bottom: 5px;
+        }
+        
+        .perfil-data p:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .perfil-data span { 
+            color: var(--texto-principal); 
+            font-weight: normal; 
+        }
+
+        .perfil-data .score-highlight {
+            color: var(--oro-oscuro);
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+
+        /* =========================================================
+           10. ANIMACIONES CLAVE
+           ========================================================= */
+        @keyframes pulseGlow { 
+            0% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); } 
+            100% { box-shadow: 0 0 50px rgba(212, 175, 55, 0.8), 0 0 100px rgba(212, 175, 55, 0.2); } 
+        }
+
+        @keyframes slideInUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* Clases Reveal (Scroll) */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(50px); 
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); 
+        }
+
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        /* =========================================================
+           11. DISEÑO RESPONSIVO (MEDIA QUERIES)
+           ========================================================= */
+        @media (max-width: 992px) {
+            .bio-grid { grid-template-columns: 1fr; gap: 40px;}
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .hero-content h1 { font-size: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; /* En producción requiere menú hamburguesa */ }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-brand p { margin: 0 auto 20px; }
+            .footer-links h4::after { left: 50%; transform: translateX(-50%); }
+            .footer-links ul a { justify-content: center; }
+            .timeline-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .msg-bubble { max-width: 95%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="main-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ESTRADA-WEB</a>
+            <ul class="nav-links">
+                <li><a href="#biografia" class="nav-item-hover">Biografía</a></li>
+                <li><a href="#ia-section" class="nav-item-hover">IA Asistente</a></li>
+                <li><a href="#legado" class="nav-item-hover">Legado Histórico</a></li>
+                <li><a href="juego.html" style="color: var(--oro-honor); font-weight: 800; border: 1px solid var(--oro-honor); padding: 5px 15px; border-radius: 20px;">🎮 Juego Táctico</a></li>
+                
+                <div id="nav-publico" style="display: flex; gap: 12px; margin-left: 20px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 20px;">
+                    <li><button onclick="ModalManager.abrir('login')" class="btn btn-auth">Ingresar</button></li>
+                    <li><button onclick="ModalManager.abrir('registro')" class="btn btn-auth registro">Unirse</button></li>
+                </div>
+
+                <div id="nav-privado" style="display: none; gap: 12px; margin-left: 20px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 20px;">
+                    <li><button onclick="ModalManager.abrir('perfil')" class="btn btn-perfil">👤 Mi Perfil</button></li>
+                </div>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero-header">
+        <div class="hero-content">
+            <div class="hero-portrait">
+                <img src="img/retrato.jpg" alt="Retrato del General José Dolores Estrada Vado">
+            </div>
+            <h1 class="reveal active">General José Dolores Estrada Vado</h1>
+            <p class="reveal active">Héroe Nacional de la República de Nicaragua. El pueblo mismo uniformado defendiendo su autodeterminación frente a la amenaza filibustera.</p>
+            <div class="hero-actions reveal active">
+                <a href="#ia-section" class="btn btn-primary">Hablar con la Historia</a>
+                <a href="juego.html" class="btn btn-outline">Iniciar Desafío Táctico</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="biografia" class="section-padding bio-section">
+            <div class="container bio-grid">
+                <div class="bio-text reveal">
+                    <h2>De Nandaime a la Inmortalidad</h2>
+                    <p><strong>José Dolores Estrada Vado</strong> nació el 16 de marzo de 1792 en Nandaime, departamento de Granada. Hijo de don Timoteo Estrada y doña Gertrudis Vado, creció forjando un carácter humilde pero inquebrantable, fundamentado en sólidos valores morales y un profundo amor por su tierra.</p>
+                    
+                    <p>Su carrera militar fue producto de las convulsiones políticas de la Nicaragua post-independencia. Destacándose por su estricta disciplina y lealtad, ascendió por mérito propio dentro de las filas castrenses, preparando el terreno para su destino histórico.</p>
+                    
+                    <p>La cima de su gloria imperecedera llegó el <strong>14 de septiembre de 1856</strong>. Comandando el glorioso <em>Ejército del Septentrión</em> con apenas 160 valientes, atrincherados estratégicamente en los corrales de piedra de la Hacienda San Jacinto, logró una hazaña táctica y moral: derrotar a las superiores fuerzas filibusteras norteamericanas lideradas ese día por Byron Cole. Esta victoria demostró al mundo que la soberanía de Nicaragua no era negociable bajo ninguna circunstancia.</p>
+                    
+                    <p>Tras sufrir años de injusto exilio debido a sus inquebrantables principios políticos frente al gobierno de Tomás Martínez, regresó triunfante a su patria en 1869, falleciendo pocos meses después en Managua. La historia le hizo justicia en 1971, cuando fue consagrado oficialmente como <strong>Héroe Nacional</strong>.</p>
+                </div>
+                <div class="bio-image reveal">
+                    <img src="img/batalla.jpg" alt="Pintura representativa de la heroica Batalla de San Jacinto">
+                </div>
+            </div>
+        </section>
+
+        <section id="ia-section" class="ia-wrapper">
+            <div class="container">
+                <div class="text-center reveal" style="margin-bottom: 50px;">
+                    <h2>Asistente Histórico Oficial</h2>
+                    <p style="color: var(--texto-secundario); font-size: 1.15rem; max-width: 700px; margin: 0 auto;">
+                        Interactúa en tiempo real con el motor de Inteligencia Artificial. Sus respuestas están calibradas utilizando fuentes documentales del Ejército de Nicaragua y la Gaceta Sandinista.
+                    </p>
+                </div>
+
+                <div class="ia-container reveal">
+                    <div class="ia-header">
+                        <img src="img/retrato.jpg" alt="Avatar IA del General">
+                        <div class="ia-info">
+                            <h3>General Estrada AI</h3>
+                            <p><span class="status-dot"></span> Red Neural Histórica en Línea</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-window" id="chat-window">
+                        <div class="msg-bubble msg-ia">
+                            <strong>Cuartel General de San Jacinto:</strong>
+                            Saludos, compatriota. Soy la representación digital de la memoria histórica del General José Dolores Estrada Vado. Mi base de datos abarca mi biografía, tácticas militares, la epopeya de San Jacinto y mi legado de dignidad nacional. ¿En qué materia deseas ser instruido el día de hoy?
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-box">
+                        <input type="text" id="user-input" placeholder="Pregunte sobre la batalla, Andrés Castro, o mi destierro..." autocomplete="off">
+                        <button id="btn-enviar" title="Enviar mensaje">Consultar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="legado" class="timeline-section section-padding">
+            <div class="container">
+                <h2 class="section-title reveal">Cronología de un Patriota</h2>
+                
+                <div class="timeline-grid">
+                    <article class="timeline-item reveal">
+                        <span class="year-badge">1792</span>
+                        <h3>Nacimiento y Raíces</h3>
+                        <p>Nace el 16 de marzo en el municipio de Nandaime, departamento de Granada. Se cría bajo la tutela de Timoteo Estrada y Gertrudis Vado, absorbiendo los valores de la Nicaragua rural.</p>
+                    </article>
+                    
+                    <article class="timeline-item reveal">
+                        <span class="year-badge">1851</span>
+                        <h3>Ascenso Militar</h3>
+                        <p>Demostrando férrea disciplina en medio del caos político nacional, es ascendido al grado de Capitán de las milicias estatales, perfilándose como un líder nato.</p>
+                    </article>
+                    
+                    <article class="timeline-item reveal">
+                        <span class="year-badge">1856</span>
+                        <h3>La Batalla Decisiva</h3>
+                        <p>El 14 de septiembre, al mando de 160 hombres del Ejército del Septentrión, derrota a los mercenarios filibusteros en la Hacienda San Jacinto, sellando la independencia nacional.</p>
+                    </article>
+                    
+                    <article class="timeline-item reveal">
+                        <span class="year-badge">1863</span>
+                        <h3>Principios y Exilio</h3>
+                        <p>Al negarse a respaldar la reelección inconstitucional del entonces presidente Tomás Martínez, es despojado injustamente de sus rangos y obligado al exilio en Centroamérica.</p>
+                    </article>
+
+                    <article class="timeline-item reveal">
+                        <span class="year-badge">1869</span>
+                        <h3>Retorno y Tránsito</h3>
+                        <p>Bajo una amnistía decretada por Fernando Guzmán, regresa a su patria con todos sus honores restituidos. Fallece en Managua el 12 de agosto de ese mismo año.</p>
+                    </article>
+
+                    <article class="timeline-item reveal">
+                        <span class="year-badge">1971</span>
+                        <h3>Inmortalidad Oficial</h3>
+                        <p>Reconociendo su papel fundamental en la supervivencia del Estado, el Congreso de la República lo declara oficialmente Héroe Nacional, perpetuando su figura en la educación.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>ESTRADA-WEB</h2>
+                    <p>Plataforma de ingeniería educativa orientada a la preservación del patrimonio histórico y la difusión táctica del legado antifilibustero del General José Dolores Estrada Vado.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Mapa del Sitio</h4>
+                    <ul>
+                        <li><a href="#biografia">Historia Biográfica</a></li>
+                        <li><a href="#ia-section">Simulador IA Asistente</a></li>
+                        <li><a href="#legado">Línea de Tiempo</a></li>
+                        <li><a href="juego.html">Módulo de Gamificación Táctica</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Referencias y Fuentes</h4>
+                    <ul>
+                        <li><a href="https://www.ejercito.mil.ni" target="_blank">Archivo Histórico - Ejército de Nicaragua</a></li>
+                        <li><a href="https://www.gacetasandinista.com" target="_blank">Módulos Formativos - Gaceta Sandinista</a></li>
+                        <li><a href="https://www.mined.gob.ni" target="_blank">Ministerio de Educación (MINED)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ESTRADA-WEB. Arquitectura web desarrollada con excelencia técnica para la memoria histórica de Nicaragua.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="modal-login" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="login-title">
+        <div class="auth-card">
+            <span class="close-btn" onclick="ModalManager.cerrar()" aria-label="Cerrar modal">&times;</span>
+            <div class="auth-logo">
+                <img src="img/retrato.jpg" alt="Sello del Cuartel General">
+            </div>
+            <h2 id="login-title">Cuartel General</h2>
+            <p class="subtitle">Autentique sus credenciales para acceder a su expediente táctico.</p>
+            
+            <form onsubmit="AuthService.iniciarSesion(event)" id="form-login">
+                <div class="input-group">
+                    <label for="login-email">Correo Institucional</label>
+                    <input type="email" id="login-email" placeholder="recluta@estradaweb.ni" required autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Clave de Acceso</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-modal">Autorizar Acceso</button>
+            </form>
+            
+            <div class="switch-form">
+                <p>¿No posee expediente militar? <a onclick="ModalManager.cambiar('registro')">Solicitar alistamiento</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-registro" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="reg-title">
+        <div class="auth-card registro-theme">
+            <span class="close-btn" onclick="ModalManager.cerrar()" aria-label="Cerrar modal">&times;</span>
+            <h2 id="reg-title">Alistamiento Oficial</h2>
+            <p class="subtitle">Integre las filas de los defensores de la memoria histórica nacional.</p>
+            
+            <form onsubmit="AuthService.registrar(event)" id="form-registro">
+                <div class="input-group">
+                    <label for="reg-nombre">Nombre y Apellidos</label>
+                    <input type="text" id="reg-nombre" placeholder="Ej. Andrés Castro" required autocomplete="name">
+                </div>
+                <div class="input-group">
+                    <label for="reg-email">Correo Electrónico</label>
+                    <input type="email" id="reg-email" placeholder="correo@ejemplo.com" required autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <label for="reg-password">Crear Clave de Acceso</label>
+                    <input type="password" id="reg-password" placeholder="Mínimo 8 caracteres" required autocomplete="new-password">
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="reg-terms" required> 
+                    <label for="reg-terms" style="margin-bottom:0; font-weight:normal;">Juro lealtad a la verdad histórica y al legado antifilibustero.</label>
+                </div>
+                
+                <button type="submit" class="btn btn-modal">Procesar Alta Militar</button>
+            </form>
+            
+            <div class="switch-form">
+                <p>¿Ya es miembro activo? <a onclick="ModalManager.cambiar('login')">Presentarse al Cuartel</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-perfil" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="perfil-title">
+        <div class="auth-card perfil-theme">
+            <span class="close-btn" onclick="ModalManager.cerrar()" aria-label="Cerrar modal">&times;</span>
+            <div class="auth-logo">
+                <img src="img/retrato.jpg" alt="Foto de Perfil" style="border-color: var(--exito);">
+            </div>
+            <h2 id="perfil-title">Expediente Militar</h2>
+            
+            <div class="perfil-data">
+                <p>Identificación: <span id="ui-user-name">Patriota Nicaragüense</span></p>
+                <p>Jerarquía Actual: <span id="ui-user-rank" style="font-weight: 700; color: var(--azul-patria);">Soldado de la Patria</span></p>
+                <p>Méritos Obtenidos: <span id="ui-user-score" class="score-highlight">1856 pts</span></p>
+            </div>
+
+            <button onclick="AuthService.cerrarSesion()" class="btn btn-modal btn-danger" style="margin-top: 25px;">Firmar Salida (Cerrar Sesión)</button>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * @namespace UIController
+         * @description Maneja las animaciones de la interfaz y efectos visuales.
+         */
+        const UIController = {
+            initScrollReveal: function() {
+                const reveals = document.querySelectorAll('.reveal');
+                const revealOnScroll = () => {
+                    const windowHeight = window.innerHeight;
+                    const elementVisible = 150; // Punto de activación
+                    
+                    reveals.forEach(reveal => {
+                        const elementTop = reveal.getBoundingClientRect().top;
+                        if (elementTop < windowHeight - elementVisible) {
+                            reveal.classList.add('active');
+                        }
+                    });
+                };
+                
+                window.addEventListener('scroll', revealOnScroll);
+                revealOnScroll(); // Trigger inicial
+            }
+        };
+
+        /**
+         * @namespace ModalManager
+         * @description Gestiona el ciclo de vida de las ventanas emergentes (Modales).
+         */
+        const ModalManager = {
+            elementos: document.querySelectorAll('.modal-overlay'),
+            
+            abrir: function(idTipo) {
+                this.cerrar(); // Prevenir colisiones
+                const modal = document.getElementById('modal-' + idTipo);
+                if(modal) {
+                    modal.style.display = 'flex';
+                    // Pequeño timeout para permitir el trigger de CSS Transition
+                    setTimeout(() => modal.classList.add('active'), 15);
+                }
+            },
+            
+            cerrar: function() {
+                this.elementos.forEach(modal => {
+                    modal.classList.remove('active');
+                    setTimeout(() => {
+                        if(!modal.classList.contains('active')) {
+                            modal.style.display = 'none';
+                        }
+                    }, 300); // Sincronizado con CSS transition
+                });
+            },
+            
+            cambiar: function(nuevoTipo) {
+                this.cerrar();
+                setTimeout(() => this.abrir(nuevoTipo), 320);
+            },
+            
+            initListeners: function() {
+                // Cerrar modal al hacer clic en el fondo oscuro
+                window.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal-overlay')) {
+                        this.cerrar();
+                    }
+                });
+                
+                // Cerrar modal con tecla Escape
+                window.addEventListener('keydown', (e) => {
+                    if(e.key === 'Escape') this.cerrar();
+                });
+            }
+        };
+
+        /**
+         * @namespace AuthService
+         * @description Simula el flujo de autenticación y maneja el estado de sesión en el DOM.
+         */
+        const AuthService = {
+            uiPublico: document.getElementById('nav-publico'),
+            uiPrivado: document.getElementById('nav-privado'),
+            
+            iniciarSesion: function(evento) {
+                evento.preventDefault();
+                // Simulación de validación API
+                ModalManager.cerrar();
+                this.uiPublico.style.display = 'none';
+                this.uiPrivado.style.display = 'flex';
+                // Reset form
+                document.getElementById('form-login').reset();
+            },
+            
+            registrar: function(evento) {
+                evento.preventDefault();
+                alert('¡Expediente de recluta creado exitosamente! Proceda a autenticarse.');
+                document.getElementById('form-registro').reset();
+                ModalManager.cambiar('login');
+            },
+            
+            cerrarSesion: function() {
+                ModalManager.cerrar();
+                this.uiPrivado.style.display = 'none';
+                this.uiPublico.style.display = 'flex';
+            }
+        };
+
+        /**
+         * @namespace EstradaAI
+         * @description Motor lógico del Asistente Histórico. Utiliza Regex para procesar intenciones.
+         */
+        const EstradaAI = {
+            // Referencias del DOM para el Chat
+            ui: {
+                ventana: document.getElementById('chat-window'),
+                input: document.getElementById('user-input'),
+                btn: document.getElementById('btn-enviar')
+            },
+
+            // Base de Conocimiento Expandida
+            baseConocimiento: [
+                {
+                    claves: ["naci", "naciste", "donde eres", "origen", "cuna", "nacimiento", "nandaime"],
+                    respuestas: [
+                        "Nací en la noble ciudad de Nandaime, en el departamento de Granada, el 16 de marzo de 1792. Mis raíces están profundamente ligadas a la tierra nicaragüense.",
+                        "Soy hijo de Nandaime. Allí vine al mundo en 1792, en el seno del hogar formado por don Timoteo Estrada y doña Gertrudis Vado, de quienes aprendí el valor del trabajo honrado."
+                    ]
+                },
+                {
+                    claves: ["quien eres", "nombre", "identidad", "presentate", "como te llamas"],
+                    respuestas: [
+                        "Soy el General de División José Dolores Estrada Vado. Tuve el supremo honor de comandar a los valientes patriotas durante la heroica jornada de San Jacinto.",
+                        "Mi nombre es José Dolores Estrada Vado, declarado Héroe Nacional por defender nuestra sagrada soberanía nacional contra la invasión filibustera."
+                    ]
+                },
+                {
+                    claves: ["padres", "familia", "timoteo", "gertrudis"],
+                    respuestas: [
+                        "Fui criado bajo la estricta y amorosa guía de mis padres, don Timoteo Estrada y doña Gertrudis Vado. Ellos forjaron en mí los principios éticos que me acompañaron toda la vida."
+                    ]
+                },
+                {
+                    claves: ["san jacinto", "batalla", "14 de septiembre", "hacienda"],
+                    respuestas: [
+                        "El 14 de septiembre de 1856 es una fecha escrita con letras de oro. Ese día, al mando de 160 hombres, atrincherados en los corrales de la hacienda, logramos repeler y quebrar a más de 300 filibusteros bien armados.",
+                        "La Batalla de San Jacinto demostró la superioridad moral de nuestra causa. Aprovechamos la topografía, el corral de piedra y el ímpetu de nuestros flecheros y soldados para expulsar al invasor comandado por Byron Cole."
+                    ]
+                },
+                {
+                    claves: ["andres castro", "piedra", "pedrada", "sargento"],
+                    respuestas: [
+                        "El Sargento Andrés Castro inmortalizó el espíritu nicaragüense. Cuando las municiones escasearon ante el feroz ataque enemigo, no retrocedió; tomó una piedra del corral y abatió a un filibustero. ¡Ese es el arrojo de nuestra raza!",
+                        "Hablar de Andrés Castro es hablar del alma de la defensa nacional. Su acción de derribar a un invasor con una piedra demuestra que cuando se defiende la patria, cualquier elemento sirve como arma letal."
+                    ]
+                },
+                {
+                    claves: ["william walker", "walker", "filibusteros", "byron cole", "yanquis", "enemigos", "mercenarios"],
+                    respuestas: [
+                        "Los filibusteros eran mercenarios desalmados traídos para usurpar nuestro territorio e instaurar la esclavitud, bajo las ambiciones de William Walker. En San Jacinto, sus tropas fueron lideradas por Byron Cole, quien pagó con su vida su osadía.",
+                        "El invasor se creía invencible por poseer armamento de repetición. Sin embargo, en los llanos de San Jacinto aprendieron que la voluntad de un pueblo libre no puede ser sometida por el fuego extranjero."
+                    ]
+                },
+                {
+                    claves: ["exilio", "destierro", "honduras", "costa rica", "tomas martinez", "politica"],
+                    respuestas: [
+                        "La integridad tiene un precio. Me opuse férreamente a las ambiciones reeleccionistas e inconstitucionales del presidente Tomás Martínez en 1863. Como represalia, fui despojado de mis honores militares y forzado a un doloroso destierro en Costa Rica y Honduras."
+                    ]
+                },
+                {
+                    claves: ["regreso", "amnistia", "fernando guzman", "volviste"],
+                    respuestas: [
+                        "Mi exilio terminó en 1869 cuando el presidente Fernando Guzmán tuvo la sabiduría de decretar una amnistía general. Regresé a mi Nicaragua amada y se me restituyeron todos mis grados militares con los debidos honores."
+                    ]
+                },
+                {
+                    claves: ["mori", "falleci", "muerte", "donde moriste", "managua", "fallecimiento"],
+                    respuestas: [
+                        "Mi tránsito a la inmortalidad ocurrió el 12 de agosto de 1869, en la ciudad de Managua, pocos meses después de haber retornado de mi exilio. Mi cuerpo físico descansó, pero mi compromiso con la patria sigue vigente.",
+                        "Fallecí en agosto de 1869. Hoy, mis restos mortales reposan en la Iglesia Parroquial de mi natal Nandaime, resguardados por el respeto de las nuevas generaciones."
+                    ]
+                },
+                {
+                    claves: ["heroe", "1971", "reconocimiento", "honores"],
+                    respuestas: [
+                        "Fue en el año 1971 cuando el Congreso Nacional, mediante decreto legislativo, me confirió oficialmente el título de Héroe Nacional. Un honor que acepto en nombre de todos los soldados anónimos que lucharon a mi lado."
+                    ]
+                },
+                {
+                    claves: ["legado", "soberania", "dignidad", "mensaje", "enseñanza", "significado"],
+                    respuestas: [
+                        "Como lo ratifica el Ejército de Nicaragua en su formación, mi legado fundamental es el antifilibusterismo. Es la enseñanza permanente de que ninguna potencia, por grande que sea, tiene derecho a pisotear nuestra soberanía."
+                    ]
+                }
+            ],
+
+            /**
+             * Limpia el texto de entrada y busca coincidencias mediante RegExp.
+             * @param {string} mensaje - El texto ingresado por el usuario.
+             * @returns {string} - La respuesta de la IA.
+             */
+            procesarLogica: function(mensaje) {
+                // Normalización extrema: minúsculas, sin tildes, sin signos de puntuación
+                let inputLimpio = mensaje.toLowerCase()
+                                         .normalize("NFD")
+                                         .replace(/[\u0300-\u036f]/g, "")
+                                         .replace(/[^a-z0-9\s]/g, "")
+                                         .trim();
+                
+                // Respuesta Fallback
+                let respuesta = "Tu interrogante es valiosa, patriota. Mi memoria táctica procesa datos sobre la Batalla de San Jacinto, mi cuna en Nandaime, o la heroica acción del Sargento Andrés Castro. Por favor, sé más específico.";
+
+                // Motor de Inferencia por Patrones
+                for (let i = 0; i < this.baseConocimiento.length; i++) {
+                    const regla = this.baseConocimiento[i];
+                    // Construye patrón \b(clave1|clave2)\b para búsqueda exacta de palabras
+                    const regex = new RegExp('\\b(' + regla.claves.join('|') + ')\\b', 'i');
+                    
+                    if (regex.test(inputLimpio)) {
+                        // Selección aleatoria si hay múltiples respuestas para dar variedad
+                        const indexAleatorio = Math.floor(Math.random() * regla.respuestas.length);
+                        respuesta = regla.respuestas[indexAleatorio];
+                        break; // Termina la búsqueda al primer match
+                    }
+                }
+                return respuesta;
+            },
+
+            /**
+             * Maneja la actualización del DOM (UI) para simular el chat.
+             */
+            enviarMensaje: function() {
+                const textoUsuario = this.ui.input.value.trim();
+                if (!textoUsuario) return;
+
+                // 1. Congelar controles y limpiar input
+                this.ui.input.value = '';
+                this.ui.input.disabled = true;
+                this.ui.btn.disabled = true;
+
+                // 2. Renderizar burbuja del usuario
+                this.ui.ventana.innerHTML += `
+                    <div class="msg-bubble msg-user">
+                        ${textoUsuario}
+                    </div>
+                `;
+                this.scrollAbajo();
+
+                // 3. Renderizar indicador de "Escribiendo..."
+                const typingId = "typing-" + Date.now();
+                this.ui.ventana.innerHTML += `
+                    <div id="${typingId}" class="msg-bubble msg-ia typing-indicator">
+                        <span style="font-size:1.2em;">✍️</span> Decodificando archivos históricos...
+                    </div>
+                `;
+                this.scrollAbajo();
+
+                // 4. Procesar respuesta y simular latencia humana
+                const respuestaIA = this.procesarLogica(textoUsuario);
+                
+                // El tiempo de respuesta es proporcional a la longitud de la respuesta (mínimo 1s, máximo 3.5s)
+                const tiempoCalculado = Math.min(Math.max(1200, respuestaIA.length * 15), 3500);
+
+                setTimeout(() => {
+                    // Remover "escribiendo..."
+                    const elTyping = document.getElementById(typingId);
+                    if(elTyping) elTyping.remove();
+
+                    // Renderizar burbuja de IA
+                    this.ui.ventana.innerHTML += `
+                        <div class="msg-bubble msg-ia">
+                            <strong>General Estrada AI:</strong>
+                            ${respuestaIA}
+                        </div>
+                    `;
+                    
+                    // Restaurar UI
+                    this.ui.input.disabled = false;
+                    this.ui.btn.disabled = false;
+                    this.ui.input.focus();
+                    this.scrollAbajo();
+
+                }, tiempoCalculado);
+            },
+
+            scrollAbajo: function() {
+                this.ui.ventana.scrollTop = this.ui.ventana.scrollHeight;
+            },
+
+            init: function() {
+                // Eventos de ratón y teclado para enviar mensajes
+                this.ui.btn.addEventListener('click', () => this.enviarMensaje());
+                this.ui.input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.enviarMensaje();
+                });
+            }
+        };
+
+        // =======================================================================
+        // INICIALIZADOR PRINCIPAL (BOOTSTRAP)
+        // =======================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            UIController.initScrollReveal();
+            ModalManager.initListeners();
+            EstradaAI.init();
+            console.log("Sistema cargado. Modales integrados y Motor IA en espera.");
+        });
+
+    </script>
+</body>
+</html>

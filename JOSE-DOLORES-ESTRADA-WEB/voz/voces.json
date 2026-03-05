@@ -1,0 +1,33 @@
+{
+  "perfil_ia": {
+    "nombre_modelo": "Estrada-Vado-Voz",
+    "descripcion": "Perfil de voz solemne, autoritario y paternal",
+    "idioma_base": "es-NI"
+  },
+  "catalogo": [
+    {
+      "prioridad": 1,
+      "nombre": "Microsoft Jorge - Spanish (Spain)",
+      "genero": "masculino",
+      "tag": "solemne"
+    },
+    {
+      "prioridad": 2,
+      "nombre": "Google español",
+      "genero": "masculino",
+      "tag": "neutral"
+    },
+    {
+      "prioridad": 3,
+      "nombre": "Spanish Nicaragua",
+      "genero": "masculino",
+      "tag": "local"
+    },
+    {
+      "prioridad": 4,
+      "nombre": "Microsoft Helena - Spanish (Spain)",
+      "genero": "femenino",
+      "tag": "asistente_alterno"
+    }
+  ]
+}
